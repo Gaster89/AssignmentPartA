@@ -12,7 +12,7 @@ namespace AssignmentPartA
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public Trainer Trainers { get; set; }
+        public List<Trainer> Trainers { get; set; } = new List<Trainer>();
         public School School { get; set; }
         public List<Student> Students { get; set; } = new List<Student>();
         public List<Assignment> Assignments { get; set; } = new List<Assignment>();
@@ -26,20 +26,30 @@ namespace AssignmentPartA
             this.School = school;
         }
 
-        public bool SetTrainer(Trainer trainer)
+        public bool AddTrainer(Trainer trainer)
         {
-            this.Trainers = trainer;
-            return (this.Trainers != null) ? true  : false;
+            trainer.Courses.Add(this);
+            this.Trainers.Add(trainer);
+            return this.Trainers.Contains(trainer) ? true : false;
+        }
+
+        public bool DelTrainer(Trainer trainer)
+        {
+            trainer.Courses.Remove(this);
+            this.Trainers.Remove(trainer);
+            return (!this.Trainers.Contains(trainer)) ? true : false;
         }
 
         public bool AddStudent(Student student)
         {
+            student.Courses.Add(this);
             this.Students.Add(student);
             return this.Students.Contains(student) ? true : false;
         }
 
         public bool DelStudent(Student student)
         {
+            student.Courses.Remove(this);
             this.Students.Remove(student);
             return (!this.Students.Contains(student)) ? true : false;
         }

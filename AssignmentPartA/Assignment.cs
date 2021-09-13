@@ -14,7 +14,7 @@ namespace AssignmentPartA
         public DateTime EndDate { get ; set; }
         public Trainer Trainer { get; set; }
         public Course Course { get; set; }
-        public List<Student> Students { get; set; } = new List<Student>();
+        public List<Student> Students{ get; set; } = new List<Student>();
 
         public Assignment(int id, string name, Course course)
         {
@@ -33,12 +33,14 @@ namespace AssignmentPartA
 
         public bool AddStudent(Student student)
         {
+            student.Assignments.Add(this);
             this.Students.Add(student);
             return this.Students.Contains(student) ? true : false;
         }
 
         public bool DelStudent(Student student)
         {
+            student.Assignments.Remove(this);
             this.Students.Remove(student);
             return (!this.Students.Contains(student)) ? true : false;
         }
