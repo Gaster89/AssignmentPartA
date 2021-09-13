@@ -116,10 +116,10 @@ namespace AssignmentPartA
                     switch (choice)
                     {
                         case "1":
-                            //Course.TerminalEdit();
+                            CourseEdit();
                             break;
                         case "2":
-                            //Assignment.TerminalEdit();
+                            AssignmentEdit();
                             break;
                         case "3":
                             //Trainer.TerminalEdit();
@@ -144,6 +144,414 @@ namespace AssignmentPartA
 
 
 
+
+        static void AssignmentEdit()
+        {
+            Console.WriteLine("Editing Assignment");
+            Console.Write("Select Course By Id: ");
+            int id = -1;
+            foreach (Course cour in school.Courses)
+            {
+                Console.WriteLine(cour.ToString());
+            }
+            try
+            {
+                id = int.Parse(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Try Again, not a valid Id!");
+            }
+            Course course = school.GetCourseById(id);
+
+            Console.Write("Select Assignment By Id: ");
+            id = -1;
+            foreach (Assignment assigment in course.Assignments)
+            {
+                Console.WriteLine(assigment.ToString());
+            }
+            try
+            {
+                id = int.Parse(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Try Again, not a valid Id!");
+            }
+            Assignment assignment = course.GetAssignmentById(id);
+            Console.WriteLine("Edit: Main Info(1) || Students(2)");
+            string choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    Console.Write("Name(1) || Trainer(2) || Course(3): ");
+                    choice = Console.ReadLine();
+                    switch(choice)
+                    {
+                        case "1":
+                            Console.Write("Enter Name: ");
+                            string name = Console.ReadLine();
+                            if(name.Length > 3 && name.Length < 20)
+                            {
+                                assignment.Name = name;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Enter a Valid Name!");
+                            }
+                            break;
+                        case "2":
+                            Console.Write("Add(1) || Remove(2)");
+                            choice = Console.ReadLine();
+                            switch (choice)
+                            {
+                                case "1":
+                                    Console.WriteLine("Select Trainer By Id: ");
+                                    id = -1;
+                                    foreach (Trainer tr in school.Trainers)
+                                    {
+                                        Console.WriteLine(tr.ToString());
+                                    }
+                                    try
+                                    {
+                                        id = int.Parse(Console.ReadLine());
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Console.WriteLine("Try Again, not a valid Id!");
+                                    }
+                                    Trainer trainer = (from tr in school.Trainers where tr.Id == id select tr).FirstOrDefault();
+                                    assignment.Trainer = trainer;
+                                    break;
+                                case "2":
+                                    assignment.Trainer = null;
+                                    break;
+                                default:
+                                    Console.WriteLine("Try again, not a valid choice!");
+                                    break;
+                            }
+                            break;
+                        case "3":
+                            Console.Write("Add(1) || Remove(2)");
+                            choice = Console.ReadLine();
+                            switch (choice)
+                            {
+                                case "1":
+                                    Console.WriteLine("Select Course By Id: ");
+                                    id = -1;
+                                    foreach (Course cour in school.Courses)
+                                    {
+                                        Console.WriteLine(cour.ToString());
+                                    }
+                                    try
+                                    {
+                                        id = int.Parse(Console.ReadLine());
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Console.WriteLine("Try Again, not a valid Id!");
+                                    }
+                                    Course cours = (from c in school.Courses where c.Id == id select c).FirstOrDefault();
+                                    assignment.Course = cours;
+                                    break;
+                                case "2":
+                                    assignment.Course = null;
+                                    break;
+                                default:
+                                    Console.WriteLine("Try again, not a valid choice!");
+                                    break;
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("Try again, not a valid choice!");
+                            break;
+                    }
+                    break;
+                case "2":
+                    Console.Write("Add(1) || Remove(2)");
+                    choice = Console.ReadLine();
+                    switch (choice)
+                    {
+                        case "1":
+                            Console.WriteLine("Select Student By Id: ");
+                            id = -1;
+                            foreach (Student st in school.Students)
+                            {
+                                Console.WriteLine(st.ToString());
+                            }
+                            try
+                            {
+                                id = int.Parse(Console.ReadLine());
+                            }
+                            catch (Exception)
+                            {
+                                Console.WriteLine("Try Again, not a valid Id!");
+                            }
+                            Student student = (from st in school.Students where st.Id == id select st).FirstOrDefault();
+                            if (assignment.AddStudent(student))
+                            {
+                                Console.WriteLine("Student Added!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Faild");
+                            }
+                            break;
+                        case "2":
+                            Console.WriteLine("Select Student By Id: ");
+                            id = -1;
+                            foreach (Student st in assignment.Students)
+                            {
+                                Console.WriteLine(st.ToString());
+                            }
+                            try
+                            {
+                                id = int.Parse(Console.ReadLine());
+                            }
+                            catch (Exception)
+                            {
+                                Console.WriteLine("Try Again, not a valid Id!");
+                            }
+                            student = (from st in assignment.Students where st.Id == id select st).FirstOrDefault();
+                            if (assignment.DelStudent(student))
+                            {
+                                Console.WriteLine("Trainer Deleted!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Failed");
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("Try again, not a valid choice!");
+                            break;
+                    }
+                    break;
+                default:
+                    Console.WriteLine("Try again, not a valid choice!");
+                    break;
+            }
+        }
+
+        static void CourseEdit()
+        {
+            Console.WriteLine("Editing Course");
+            Console.Write("Select Course By Id: ");
+            int id = -1;
+            foreach(Course cour in school.Courses)
+            {
+                Console.WriteLine(cour.ToString());
+            }
+            try
+            {
+                id = int.Parse(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Try Again, not a valid Id!");
+            }
+            Course course = school.GetCourseById(id);
+            Console.WriteLine("Edit: Main Info(1) || Ralated Records(2)");
+            string choice = Console.ReadLine();
+            switch(choice)
+            {
+                case "1":
+                    Console.Write("Enter Name: ");
+                    string name = Console.ReadLine();
+                    if(name.Length > 3 && name.Length < 20)
+                    {
+                        course.Name = name;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Try again, not a valid name!");
+                    }
+                    break;
+                case "2":
+                    Console.WriteLine("Edit: Assignment(1) || Trainer(2) || Student(3)");
+                    choice = Console.ReadLine();
+                    switch(choice)
+                    {
+                        case "1":
+                            Console.Write("Add(1) || Remove(2)");
+                            choice = Console.ReadLine();
+                            switch(choice)
+                            {
+                                case "1":
+                                    Console.Write("Enter Assignment Name: ");
+                                    name = Console.ReadLine();
+                                    if(name.Length > 3 && name.Length < 20)
+                                    {
+                                        if ( course.CreateAssignment(name) )
+                                        {
+                                            Console.WriteLine("Assignment Added");
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Failed");
+                                        }
+                                    }
+                                    break;
+                                case "2":
+                                    Console.Write("Select Assignment By Id: ");
+                                    id = -1;
+                                    try
+                                    {
+                                        foreach (Assignment assignment in course.Assignments)
+                                        {
+                                            Console.WriteLine(assignment.ToString());
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Console.WriteLine("Try Again, not a valid Id!");
+                                    }
+                                    id = int.Parse(Console.ReadLine());
+                                    Assignment ass = course.GetAssignmentById(id);
+                                    if ( course.RemoveAssignment(ass) )
+                                    {
+                                        Console.WriteLine("Assignment Deleted!");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Failed");
+                                    }
+                                    break;
+                                default:
+                                    Console.WriteLine("Try again, not a valid choice!");
+                                    break;
+                            }
+                            break;
+                        case "2":
+                            Console.Write("Add(1) || Remove(2)");
+                            choice = Console.ReadLine();
+                            switch (choice)
+                            {
+                                case "1":
+                                    Console.WriteLine("Select Trainer By Id: ");
+                                    id = -1;
+                                    foreach(Trainer tr in school.Trainers)
+                                    {
+                                        Console.WriteLine(tr.ToString());
+                                    }
+                                    try
+                                    {
+                                        id = int.Parse(Console.ReadLine());
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Console.WriteLine("Try Again, not a valid Id!");
+                                    }
+                                    Trainer trainer = (from tr in course.Trainers where tr.Id == id select tr).FirstOrDefault();
+                                    if(course.AddTrainer(trainer))
+                                    {
+                                        Console.WriteLine("Trainer Added!");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Faild");
+                                    }
+                                    break;
+                                case "2":
+                                    Console.WriteLine("Select Trainer By Id: ");
+                                    id = -1;
+                                    foreach (Trainer tr in course.Trainers)
+                                    {
+                                        Console.WriteLine(tr.ToString());
+                                    }
+                                    try
+                                    {
+                                        id = int.Parse(Console.ReadLine());
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Console.WriteLine("Try Again, not a valid Id!");
+                                    }
+                                    trainer = (from tr in course.Trainers where tr.Id == id select tr).FirstOrDefault();
+                                    if (course.DelTrainer(trainer))
+                                    {
+                                        Console.WriteLine("Trainer Deleted!");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Failed");
+                                    }
+                                    break;
+                                default:
+                                    Console.WriteLine("Try again, not a valid choice!");
+                                    break;
+                            }
+                            break;
+                        case "3":
+                            Console.Write("Add(1) || Remove(2)");
+                            choice = Console.ReadLine();
+                            switch (choice)
+                            {
+                                case "1":
+                                    Console.WriteLine("Select Student By Id: ");
+                                    id = -1;
+                                    foreach (Student st in school.Students)
+                                    {
+                                        Console.WriteLine(st.ToString());
+                                    }
+                                    try
+                                    {
+                                        id = int.Parse(Console.ReadLine());
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Console.WriteLine("Try Again, not a valid Id!");
+                                    }
+                                    Student student = (from st in course.Students where st.Id == id select st).FirstOrDefault();
+                                    if(course.AddStudent(student))
+                                    {
+                                        Console.WriteLine("Student Added!");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Faild");
+                                    }
+                                    break;
+                                case "2":
+                                    Console.WriteLine("Select Student By Id: ");
+                                    id = -1;
+                                    foreach (Student st in course.Students)
+                                    {
+                                        Console.WriteLine(st.ToString());
+                                    }
+                                    try
+                                    {
+                                        id = int.Parse(Console.ReadLine());
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Console.WriteLine("Try Again, not a valid Id!");
+                                    }
+                                    student = (from st in course.Students where st.Id == id select st).FirstOrDefault();
+                                    if (course.DelStudent(student))
+                                    {
+                                        Console.WriteLine("Trainer Deleted!");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Failed");
+                                    }
+                                    break;
+                                default:
+                                    Console.WriteLine("Try again, not a valid choice!");
+                                    break;
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("Try again, not a valid choice!");
+                            break;
+                    }
+                    break;
+                default:
+                    Console.WriteLine("Try again, not a valid choice!");
+                    break;
+            }
+        }
 
 
         static void GetAllStudentsWhoNeedToSubmitAssigNmentsOnTheSameWeek()
@@ -195,7 +603,7 @@ namespace AssignmentPartA
                 Console.WriteLine("Try Again, not a valid Id!");
             }
             Course course = school.GetCourseById(id);
-            Console.Write("Sletect Assignment By Id: ");
+            Console.Write("Select Assignment By Id: ");
             foreach (Assignment ass in course.Assignments)
             {
                 Console.WriteLine(ass.ToString());
@@ -219,7 +627,7 @@ namespace AssignmentPartA
         static void GetAssignmentsOfCourse()
         {
             Console.WriteLine("Get Assignments Of Course: ");
-            Console.Write("Sletect Course By Id: ");
+            Console.Write("Select Course By Id: ");
             int id = -1;
             try
             {

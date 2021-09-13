@@ -57,6 +57,7 @@ namespace AssignmentPartA
         public bool CreateAssignment(string name)
         {
             Assignment assignment = new Assignment(this.Assignments.Count, name, this);
+            assignment.Course = this;
             this.Assignments.Add(assignment);
             return this.Assignments.Contains(assignment) ? true : false;
         }
@@ -64,6 +65,7 @@ namespace AssignmentPartA
         public bool RemoveAssignment(Assignment assignment)
         {
             this.Assignments.Remove(assignment);
+            assignment.Course = null;
             return (!this.Assignments.Contains(assignment)) ? true : false;
         }
 
