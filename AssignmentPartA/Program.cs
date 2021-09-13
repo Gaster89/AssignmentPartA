@@ -15,8 +15,6 @@ namespace AssignmentPartA
 
         static void Main(string[] args)
         {
-            //AddTestRecords testRecords = new AddTestRecords();
-            //testRecords.AddRecords();
 
             while (true)
             {
@@ -122,10 +120,10 @@ namespace AssignmentPartA
                             AssignmentEdit();
                             break;
                         case "3":
-                            //Trainer.TerminalEdit();
+                            TrainerEdit();
                             break;
                         case "4":
-                            //Student.TerminalEdit();
+                            StudentEdit();
                             break;
                         default:
                             Console.WriteLine("Enter a Valid Choice!");
@@ -144,6 +142,275 @@ namespace AssignmentPartA
 
 
 
+        static void StudentEdit()
+        {
+            Console.WriteLine("Edit: Main Info(1) || Add(2) || Delete(3)");
+            string choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    Console.Write("Select Student By Id: ");
+                    int id = -1;
+                    foreach (Student st in school.Students)
+                    {
+                        Console.WriteLine(st.ToString());
+                    }
+                    try
+                    {
+                        id = int.Parse(Console.ReadLine());
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Try Again, not a valid Id!");
+                    }
+                    Student student = (from s in school.Students where s.Id == id select s).FirstOrDefault();
+                    Console.WriteLine("FirstName(1) || LastName(2) || Email(3): ");
+                    choice = Console.ReadLine();
+                    switch (choice)
+                    {
+                        case "1":
+                            Console.Write("Enter FirstName: ");
+                            string firstname = Console.ReadLine();
+                            if (firstname.Length > 3 && firstname.Length < 20)
+                            {
+                                student.FirstName = firstname;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Enter a valid First Name!");
+                            }
+                            break;
+                        case "2":
+                            Console.Write("Enter LastName: ");
+                            string lname = Console.ReadLine();
+                            if (lname.Length > 3 && lname.Length < 20)
+                            {
+                                student.LastName = lname;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Enter a valid Last Name!");
+                            }
+                            break;
+                        case "3":
+                            Console.Write("Enter Email: ");
+                            string email = Console.ReadLine();
+                            if (Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+                            {
+                                student.Email = email;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Enter a valid Email!");
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("Try again, not a valid choice!");
+                            break;
+                    }
+                    break;
+                case "2":
+                    Console.Write("Enter FirstName: ");
+                    string fname = Console.ReadLine();
+                    if (fname.Length > 3 && fname.Length < 20)
+                    {
+                        Console.Write("Enter LastName: ");
+                        string lname = Console.ReadLine();
+                        if (lname.Length > 3 && lname.Length < 20)
+                        {
+                            Console.Write("Enter Email: ");
+                            string email = Console.ReadLine();
+                            if (Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+                            {
+                                if (school.CreateStudent(fname, lname, email))
+                                {
+                                    Console.WriteLine("Trainer Added!");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Failed");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Enter a valid Email!");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Enter a valid Last Name!");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Enter a valid First Name!");
+                    }
+                    break;
+                case "3":
+                    Console.Write("Select Student By Id: ");
+                    id = -1;
+                    foreach (Student st in school.Students)
+                    {
+                        Console.WriteLine(st.ToString());
+                    }
+                    try
+                    {
+                        id = int.Parse(Console.ReadLine());
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Try Again, not a valid Id!");
+                    }
+                    student = (from s in school.Students where s.Id == id select s).FirstOrDefault();
+                    if (school.RemoveStudent(student))
+                    {
+                        Console.WriteLine("Student Deleted!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed");
+                    }
+                    break;
+                default:
+                    Console.WriteLine("Try again, not a valid choice!");
+                    break;
+            }
+        }
+
+
+        static void TrainerEdit()
+        {
+            Console.WriteLine("Edit: Main Info(1) || Add(2) || Delete(3)");
+            string choice = Console.ReadLine();
+            switch(choice)
+            {
+                case "1":
+                    Console.Write("Select Trainer By Id: ");
+                    int id = -1;
+                    foreach (Trainer tra in school.Trainers)
+                    {
+                        Console.WriteLine(tra.ToString());
+                    }
+                    try
+                    {
+                        id = int.Parse(Console.ReadLine());
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Try Again, not a valid Id!");
+                    }
+                    Trainer trainer = (from t in school.Trainers where t.Id == id select t).FirstOrDefault();
+                    Console.WriteLine("FirstName(1) || LastName(2) || Email(3): ");
+                    choice = Console.ReadLine();
+                    switch(choice)
+                    {
+                        case "1":
+                            Console.Write("Enter First Name: ");
+                            string firstname = Console.ReadLine();
+                            if (firstname.Length > 3 && firstname.Length < 20)
+                            {
+                                trainer.FirstName = firstname;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Enter a valid First Name!");
+                            }
+                            break;
+                        case "2":
+                            Console.Write("Enter Last Name: ");
+                            string lname = Console.ReadLine();
+                            if (lname.Length > 3 && lname.Length < 20)
+                            {
+                                trainer.LastName = lname;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Enter a valid Last Name!");
+                            }
+                            break;
+                        case "3":
+                            Console.Write("Enter Email: ");
+                            string email = Console.ReadLine();
+                            if (Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+                            {
+                                trainer.Email = email;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Enter a valid Email!");
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("Try again, not a valid choice!");
+                            break;
+                    }
+                    break;
+                case "2":
+                    Console.Write("Enter First Name: ");
+                    string fname = Console.ReadLine();
+                    if(fname.Length > 3 && fname.Length < 20)
+                    {
+                        Console.Write("Enter Last Name: ");
+                        string lname = Console.ReadLine();
+                        if(lname.Length > 3 && lname.Length < 20) {
+                            Console.Write("Enter Email: ");
+                            string email = Console.ReadLine();
+                            if (Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+                            {
+                                if (school.CreateTrainer(fname, lname, email))
+                                {
+                                    Console.WriteLine("Trainer Added!");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Failed");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Enter a valid Email!");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Enter a valid Last Name!");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Enter a valid First Name!");
+                    }
+                    break;
+                case "3":
+                    Console.Write("Select Trainer By Id: ");
+                    id = -1;
+                    foreach(Trainer trai in school.Trainers)
+                    {
+                        Console.WriteLine(trai.ToString());
+                    }
+                    try
+                    {
+                        id = int.Parse(Console.ReadLine());
+                    }
+                    catch(Exception)
+                    {
+                        Console.WriteLine("Try Again, not a valid Id!");
+                    }
+                    Trainer tr = (from t in school.Trainers where t.Id == id select t).FirstOrDefault();
+                    if(school.RemoveTrainer(tr))
+                    {
+                        Console.WriteLine("Trainer Deleted!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed");
+                    }
+                    break;
+                default:
+                    Console.WriteLine("Try again, not a valid choice!");
+                    break;
+            }
+        }
 
         static void AssignmentEdit()
         {
@@ -648,7 +915,7 @@ namespace AssignmentPartA
         static void GetTrainersOfCourse()
         {
             Console.WriteLine("Get Trainers Of Course: ");
-            Console.Write("Sletect Course By Id: ");
+            Console.Write("Select Course By Id: ");
             int id = -1;
             try
             {
@@ -669,7 +936,7 @@ namespace AssignmentPartA
         static void GetStudentsOfCourse()
         {
             Console.WriteLine("Get Students Of Course: ");
-            Console.Write("Sletect Course By Id: ");
+            Console.Write("Select Course By Id: ");
             int id = -1;
             try
             {
@@ -707,7 +974,7 @@ namespace AssignmentPartA
         static void GetAssignments()
         {
             Console.WriteLine("Get Assignments: ");
-            Console.Write("Sletect Course By Id: ");
+            Console.Write("Select Course By Id: ");
             int id = -1;
             try
             {
